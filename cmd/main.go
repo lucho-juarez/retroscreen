@@ -31,13 +31,12 @@ func main() {
 	machine := domain.NewMachine(boardConfig)
 
 	machine.Render()
-	action, params := input.ParseInput(input.PromptInput("command list:\n" +
-		"new:\tsymbol x y height width\t(char, int, int, int, int space separated)\n" +
-		"delete:\tsymbol\t(char)\n" +
-		"move:\tsymbol deltaX deltaY\t(char, int, int, space separated)\n" +
-		"exit\n>"))
+	action, params, err := input.ParseInput(input.PromptInput(input.Help()))
 
 	for {
+		for err != nil {
+			action, params, err = input.ParseInput(input.PromptInput(err.Error()))
+		}
 		if action == input.ActionExit {
 			return
 		}
@@ -64,7 +63,7 @@ func main() {
 		}
 
 		machine.Render()
-		action, params = input.ParseInput(input.PromptInput(">"))
+		action, params, err = input.ParseInput(input.PromptInput(">"))
 	}
 
 }

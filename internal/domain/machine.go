@@ -23,7 +23,7 @@ func (m *Machine) Move(symbol Symbol, offsetX, offsetY int) error {
 	return nil
 }
 func (m *Machine) Add(shape ShapeI) error {
-	if shape := m.board.GetShape(shape.GetSymbol()); shape != nil {
+	if shape, _ := m.board.GetShape(shape.GetSymbol()); shape != nil {
 		return fmt.Errorf("symbol '%+v' already exist", shape)
 	}
 	// TODO check error
@@ -36,4 +36,8 @@ func (m *Machine) Render() {
 
 func (m *Machine) Delete(symbol Symbol) {
 	m.board.Delete(symbol)
+}
+
+func (m *Machine) Combine(master, slave Symbol) {
+	m.board.Combine(master, slave)
 }

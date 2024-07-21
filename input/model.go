@@ -7,5 +7,6 @@ const (
 	ActionNew Action = iota
 	ActionDelete
 	ActionMove
+	ActionCombine
 	ActionExit
 )

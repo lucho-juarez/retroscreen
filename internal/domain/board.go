@@ -36,18 +36,18 @@ func (b *Board) Draw() {
 	print(sliceBoard)
 }
 
-func (b *Board) GetShape(symbol Symbol) *ShapeI {
-	for _, shapeI := range b.stack {
+func (b *Board) GetShape(symbol Symbol) (*ShapeI, int) {
+	for i, shapeI := range b.stack {
 		if shapeI == nil {
-			return nil
+			return nil, -1
 		}
 		shape := (*shapeI).(ShapeI)
 
 		if shape.GetSymbol() == symbol {
-			return shapeI
+			return shapeI, i
 		}
 	}
-	return nil
+	return nil, -1
 }
 
 func (b *Board) Move(symbol Symbol, offsetX, offsetY int) error {
@@ -58,7 +58,7 @@ func (b *Board) Move(symbol Symbol, offsetX, offsetY int) error {
 
 		shape := (*shapeI).(ShapeI)
 		if shape.GetSymbol() == symbol {
-			movedShape, _ := shape.Move(symbol, offsetX, offsetY)
+			movedShape, _ := shape.Move(offsetX, offsetY)
 			b.stack[i] = &movedShape
 		}
 	}
@@ -96,6 +96,36 @@ func (b *Board) Add(shape ShapeI) error {
 	b.stack[b.shapesCount] = &shape
 	b.shapesCount++
 
+	return nil
+}
+
+func (b *Board) Combine(master, slave Symbol) error {
+	var masterShape ShapeI
+	var slaveShape ShapeI
+	var masterIndex int
+	if m, i := b.GetShape(master); m == nil {
+		return fmt.Errorf("master not found '%c'", master)
+	} else {
+		masterIndex = i
+		masterShape = *m
+	}
+
+	if s, _ := b.GetShape(slave); s == nil {
+		return fmt.Errorf("slave not found '%c'", slave)
+	} else {
+		slaveShape = *s
+	}
+
+	fmt.Printf("combine '%+v' '%+v'", masterShape, slaveShape)
+
+	masterShape, err := masterShape.Combine(masterShape, slaveShape)
+	if err != nil {
+		return err
+	}
+
+	b.Delete(slave)
+
+	b.stack[masterIndex] = &masterShape
 	return nil
 }
 

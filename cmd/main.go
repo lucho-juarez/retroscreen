@@ -60,6 +60,12 @@ func main() {
 			y, _ := strconv.Atoi(params[2])
 			machine.Move(domain.Symbol(symbol), x, y)
 
+		case input.ActionCombine:
+			master := []rune(params[0])[0]
+			slave := []rune(params[1])[0]
+
+			machine.Combine(domain.Symbol(master), domain.Symbol(slave))
+
 		}
 
 		machine.Render()

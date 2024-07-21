@@ -16,10 +16,11 @@ type DrawableBoard [][]rune
 type ShapeI interface {
 	GetSymbol() Symbol
 	Draw(input DrawableBoard) DrawableBoard
-	Move(symbol Symbol, offsetX, offsetY int) (ShapeI, error)
+	Move(offsetX, offsetY int) (ShapeI, error)
+	Combine(master, slave ShapeI) (ShapeI, error)
 }
 
-func (s *BaseShape) Move(symbol Symbol, offsetX, offsetY int) error {
+func (s *BaseShape) Move(offsetX, offsetY int) error {
 	s.X += offsetX
 	s.Y += offsetY
 	return nil
@@ -33,4 +34,5 @@ type Rectangle struct {
 	BaseShape
 	Height int
 	Width  int
+	Child  *Rectangle
 }

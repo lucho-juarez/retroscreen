@@ -9,9 +9,10 @@ import (
 )
 
 const (
-	TextNew    = "new:\tsymbol x y height width\t(char, int, int, int, int space separated)\n"
-	TextDelete = "delete:\tsymbol\t(char)\n"
-	MoveText   = "move:\tsymbol deltaX deltaY\t(char, int, int, space separated)\n"
+	TextNew     = "new:\tsymbol x y height width\t(char, int, int, int, int space separated)\n"
+	TextDelete  = "delete:\tsymbol\t(char)\n"
+	TextMove    = "move:\tsymbol deltaX deltaY\t(char, int, int, space separated)\n"
+	TextCombine = "combine:\tmaster symbol slave symbol (char, char)"
 )
 
 func PromptInput(prompt string) string {
@@ -48,7 +49,7 @@ func ParseInput(input string) (a Action, p Params, err error) {
 		return
 	case "move":
 		if len(p) != 3 {
-			err = fmt.Errorf("some param missing\nhelp\n%s", MoveText)
+			err = fmt.Errorf("some param missing\nhelp\n%s", TextMove)
 			return
 		}
 		for i := 1; i < len(p); i++ {
@@ -59,19 +60,27 @@ func ParseInput(input string) (a Action, p Params, err error) {
 		}
 		a = ActionMove
 		return
+	case "combine":
+		if len(p) != 2 {
+			err = fmt.Errorf("some param missing\nhelp\n%s", TextCombine)
+			return
+		}
+		a = ActionCombine
+		return
 	case "exit":
 		a = ActionExit
 		return
 	default:
-		err = fmt.Errorf("invalid command '%s'", inputs[0])
+		err = fmt.Errorf("invalid command \nhelp\n%s", Help())
 	}
 	return
 }
 
 func Help() string {
 	return "command list:\n" +
+		TextCombine +
 		TextNew +
 		TextDelete +
-		MoveText +
+		TextMove +
 		"exit\n>"
 }

@@ -40,6 +40,7 @@ func (r Rectangle) Combine(master, slave ShapeI) (ShapeI, error) {
 		return master, nil
 	}
 
+	// TODO refactor, this coult be better using Shapes, not rectangle.
 	slaveParsed := slave.(Rectangle)
 	masterParsed := master.(Rectangle)
 

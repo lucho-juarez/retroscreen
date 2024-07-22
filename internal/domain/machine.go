@@ -26,7 +26,7 @@ func (m *Machine) Add(shape ShapeI) error {
 	if shape, _ := m.board.GetShape(shape.GetSymbol()); shape != nil {
 		return fmt.Errorf("symbol '%+v' already exist", shape)
 	}
-	// TODO check error
+
 	m.board.Add(shape)
 	return nil
 }

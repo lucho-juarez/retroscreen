@@ -1,7 +1,5 @@
 package domain
 
-import "fmt"
-
 func (r Rectangle) Draw(input DrawableBoard) DrawableBoard {
 	//outside for used forhorizontal select
 	for i := r.BaseShape.X; i < r.BaseShape.X+r.Width && i < len(input[0]); i++ {
@@ -37,7 +35,6 @@ func (r Rectangle) GetSymbol() Symbol {
 }
 
 func (r Rectangle) Combine(master, slave ShapeI) (ShapeI, error) {
-	fmt.Printf("\n'%+v'  '%+v'\n", master, slave)
 
 	if slave == nil {
 		return master, nil

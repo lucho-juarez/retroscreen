@@ -116,8 +116,6 @@ func (b *Board) Combine(master, slave Symbol) error {
 		slaveShape = *s
 	}
 
-	fmt.Printf("combine '%+v' '%+v'", masterShape, slaveShape)
-
 	masterShape, err := masterShape.Combine(masterShape, slaveShape)
 	if err != nil {
 		return err
